@@ -83,10 +83,16 @@ const getUserDetails = async (req,res) => {
 
 }
 
+const getChatPage = (req,res) => {
+     
+    res.sendFile(path.join(__dirname,'../','views','chat.html'))
+}
+
 
 module.exports = {
     getSignUpPage,
     postUserDetails,
     getLoginPage,
-    getUserDetails
+    getUserDetails,
+    getChatPage
 }

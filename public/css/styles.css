@@ -1,0 +1,77 @@
+/* Basic reset */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 24px 22px;
+}
+
+h1, h2, h3, h4 { margin: 0 0 16px; font-weight: 600; }
+
+form { display: grid; gap: 12px; }
+
+label { font-size: 14px; color: #374151; }
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #111827;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  background: #fff;
+}
+
+button[type="submit"] {
+  margin-top: 4px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.02s;
+}
+button[type="submit"]:hover { background: #1d4ed8; }
+button[type="submit"]:active { transform: translateY(1px); }
+
+.errormsg {
+  min-height: 18px;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #b91c1c;
+}
+
+.container2 { margin-top: 12px; text-align: center; }
+.container2 a { color: #2563eb; text-decoration: none; }
+.container2 a:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .container { border-radius: 0; height: 100%; max-width: none; }
+}
