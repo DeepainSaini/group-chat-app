@@ -18,14 +18,28 @@ document.querySelector('form').addEventListener('submit',(event)=>{
         event.target.email.value = "";
         event.target.number.value = "";
         event.target.password.value = "";
+        window.location.href = '/user/login'
 
     }).catch((error)=>{
-
-        if(error.response.data.message === "email already exists"){
-            errorDiv.textContent = "Email already exists.";
+        
+        console.log(error.response.data.message);
+        if(error.response.data.message === "USER ALREADY EXISTS"){
+            errorDiv.textContent = "USER ALREADY EXISTS";
             setTimeout(() => {
                 errorDiv.textContent = "";
-            }, 3000);
+            }, 4000);
+        }
+        else if(error.response.data.message === "USER WITH THIS EMAIL ALREADY EXISTS"){
+            errorDiv.textContent = "USER WITH THIS EMAIL ALREADY EXISTS";
+            setTimeout(() => {
+                errorDiv.textContent = "";
+            }, 4000);
+        }
+        else  if(error.response.data.message === "USER WITH THIS PHONE NUMBER ALREADY EXISTS"){
+            errorDiv.textContent = "USER WITH THIS PHONE NUMBER ALREADY EXISTS";
+            setTimeout(() => {
+                errorDiv.textContent = "";
+            }, 4000);
         }
         else{
             errorDiv.textContent = "Something went wrong.";

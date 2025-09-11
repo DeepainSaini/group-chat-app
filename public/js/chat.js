@@ -1,3 +1,17 @@
+const token = localStorage.getItem('token');
+
+
+window.addEventListener('DOMContentLoaded',(event)=>{
+
+     axios.get('http://localhost:3000'+"/user/chat",{headers : {'Authorization' : token}}).then((result)=>{
+
+        console.log(result.data.chats);
+
+     }).catch((error)=>{
+
+        console.log(error);
+     })
+})
 
 document.querySelector('form').addEventListener('submit',(event)=>{
 
@@ -8,8 +22,6 @@ document.querySelector('form').addEventListener('submit',(event)=>{
         message : event.target.message.value
     }
 
-    const token = localStorage.getItem('token');
-    console.log(token);
 
     axios.post('http://localhost:3000'+"/user/chat",obj,{headers : {'Authorization' : token}}).then((result)=>{
         

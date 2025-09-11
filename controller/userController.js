@@ -2,6 +2,7 @@ const path = require('path');
 const { User,Chat,sequelize } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const getSignUpPage =  (req,res) => {
     res.sendFile(path.join(__dirname,'../','views','signup.html'));
@@ -14,7 +15,15 @@ const postUserDetails = async (req,res) => {
     try{
 
         const {name,email,number,password} = req.body;
-        let user = await User.findOne({where : {email : email}, transaction : t});
+        let user = await User.findOne(
+            {where : {
+               
+                [Op.or]:[
+                    {email : email}, 
+                    {phoneNumber: number}
+                ]
+
+            }});
 
         if(!user){
             
@@ -32,8 +41,17 @@ const postUserDetails = async (req,res) => {
             res.status(201).json({message : "User Created Successfully."});
         }
         else{
-
-             res.status(409).json({message : "EMAIL ALREADY EXISTS"});
+             
+            if(user.email === email && user.phoneNumber === number){
+                res.status(409).json({message : "USER ALREADY EXISTS"});
+            }
+            else if(user.email === email){
+                res.status(409).json({message : "USER WITH THIS EMAIL ALREADY EXISTS"});
+            }
+            else{
+                res.status(409).json({message : "USER WITH THIS PHONE NUMBER ALREADY EXISTS"});
+            }
+             
         }
 
     }catch(error){
@@ -60,11 +78,31 @@ const getUserDetails = async (req,res) => {
     try{
        
         const {email,number,password} = req.body;
-        const user = await User.findOne({where : {email : email}});
+        const user = await User.findOne({
+
+            where: {
+                [Op.or]:[
+                    {email : email}, 
+                    {phoneNumber: number}
+                ]
+            }
+        });
     
         if(!user){
+            
+            return res.status(401).json({message: "user does not exist please signup"})
+        }
+        else if(user.email !== email && user.phoneNumber !== number){
            
-            return res.status(401).json({message : "User Does Not Exist"});
+            return res.status(401).json({message : "user does not exist please signup"});
+        }
+        else if(user.email === email && user.phoneNumber !== number){
+            
+            return res.status(401).json({message : "phone number doesn't match this email"});
+        }
+        else if(user.email != email && user.phoneNumber === number){
+            
+            return res.status(401).json({message : "email not registered please sign up"});
         }
         
         const isMatch = await bcrypt.compare(password,user.password);
@@ -98,12 +136,27 @@ const addChats = async (req,res) => {
             UserId : req.user.id
         })
 
-        res.status(200).json({message: "message added"});
+        res.status(200).json({message: "message added",chat});
 
     }catch(error){
         
         console.log(error);
         res.status(500).json({message: "something went wrong"});
+    }
+
+}
+
+const getChats = async (req,res) => {
+
+    try{
+
+        const chats = await Chat.findAll();
+        res.status(200).json({message: "sent chats",chats})
+
+    }catch(error){
+
+        console.log(error);
+        res.status(500).json({message: "someting went wrong"});
     }
 
 }
@@ -115,5 +168,6 @@ module.exports = {
     getLoginPage,
     getUserDetails,
     getChatPage,
-    addChats
+    addChats,
+    getChats
 }

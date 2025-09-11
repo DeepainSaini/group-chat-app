@@ -19,12 +19,27 @@ document.querySelector('form').addEventListener('submit',(event)=>{
         event.target.number.value = "";
         event.target.password.value = "";
         localStorage.setItem('token',resullt.data.token);
+        window.location.href = '/user/chatpage'
 
     }).catch((error)=>{
 
-        if(error.response.data.message === "User Does Not Exist"){
+        if(error.response.data.message === "user does not exist please signup"){
 
-            errorDiv.textContent = 'USER DOEST NOT EXIST';
+            errorDiv.textContent = 'USER DOEST NOT EXIST. PLEASE SIGNUP';
+            setTimeout(()=>{
+                errorDiv.textContent = "";
+            },3000);
+        }
+        else if(error.response.data.message === "phone number doesn't match this email"){
+
+            errorDiv.textContent = "PHONE NUMBER DOESN'T MATCH WITH EMAIL.";
+            setTimeout(()=>{
+                errorDiv.textContent = "";
+            },3000);
+        }
+        else if(error.response.data.message === "email not registered please sign up"){
+
+            errorDiv.textContent = "EMAIL NOT REGISTERED. PLEASE SIGNUP";
             setTimeout(()=>{
                 errorDiv.textContent = "";
             },3000);

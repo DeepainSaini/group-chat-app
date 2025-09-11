@@ -15,11 +15,13 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull:false,
+        unique: true
       },
       phoneNumber: {
         type: Sequelize.INTEGER,
-        allowNull:false
+        allowNull:false,
+        unique
       },
       password: {
         type: Sequelize.STRING,
