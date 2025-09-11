@@ -1,5 +1,5 @@
 const path = require('path');
-const { User,sequelize } = require('../models');
+const { User,Chat,sequelize } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -88,11 +88,32 @@ const getChatPage = (req,res) => {
     res.sendFile(path.join(__dirname,'../','views','chat.html'))
 }
 
+const addChats = async (req,res) => {
+
+    try{
+        const {message} = req.body;
+        const chat = await Chat.create({
+
+            content : message,
+            UserId : req.user.id
+        })
+
+        res.status(200).json({message: "message added"});
+
+    }catch(error){
+        
+        console.log(error);
+        res.status(500).json({message: "something went wrong"});
+    }
+
+}
+
 
 module.exports = {
     getSignUpPage,
     postUserDetails,
     getLoginPage,
     getUserDetails,
-    getChatPage
+    getChatPage,
+    addChats
 }
