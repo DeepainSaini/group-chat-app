@@ -1,5 +1,9 @@
 const token = localStorage.getItem('token');
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3000',{
+    auth: {
+        token: token
+    }
+});
 
 
 document.querySelector('form').addEventListener('submit',(event)=>{
@@ -50,7 +54,7 @@ function getMessages(message){
     const messagesContainer = document.getElementById('messages');
     const div = document.createElement('div')
     div.classList.add('message');
-    div.innerText = message;
+    div.innerHTML = `<strong>${message.username}</strong>: ${message.message}`;
     messagesContainer.appendChild(div);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
