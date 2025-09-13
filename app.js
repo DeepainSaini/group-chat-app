@@ -1,12 +1,12 @@
 const express  = require('express');
 const http = require('http');
-const websocket = require('ws');
+const { Server } = require('socket.io');
 const userRoute = require('./routes/userRoutes');
 const chatRoute = require('./routes/chatRoutes');
 const app  = express();
 
 const server = http.createServer(app);
-const wss = new websocket.Server({server});
+const io = new Server(server);
 
 
 const db = require('./models');
@@ -18,24 +18,11 @@ app.use(express.static('public'));
 app.use('/user',userRoute);
 app.use('/user',chatRoute);
 
-let sockets = [];
-
-wss.on('connection',(ws)=>{
-
-    sockets.push(ws);
-
-    ws.on('message',(message)=>{
-        sockets.forEach((socket)=>{
-            const messageString  = message.toString();
-            socket.send(messageString);
-        });
-    })
-
-    ws.on('close',()=>{
-        sockets = sockets.filter((socket)=>{
-            socket !==ws;
-        });
-    })
+io.on("connection",(socket)=>{
+    console.log('a user connected',socket.id);
+    socket.on("chat-messages",(message)=>{
+        io.emit("chat-messages",message);
+    });
 })
 
 db.sequelize.sync({force:false}).then(()=>{

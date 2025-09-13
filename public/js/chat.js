@@ -1,28 +1,17 @@
-// const token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
+const socket = io('http://localhost:3000');
 
 
+document.querySelector('form').addEventListener('submit',(event)=>{
 
-// document.querySelector('form').addEventListener('submit',(event)=>{
-
-//     event.preventDefault();
-
-//     const obj = {
-
-//         message : event.target.message.value
-//     }
+    event.preventDefault();
+    const message = event.target.message.value
+    socket.emit("chat-messages",message);
+    event.target.message.value = "";
+   
 
 
-//     axios.post('http://localhost:3000'+"/user/chat",obj,{headers : {'Authorization' : token}}).then((result)=>{
-        
-//         event.target.message.value = "";
-//         console.log('message saved successfully');
-
-//     }).catch((error)=>{
-//         console.log(error);
-//     })
-
-
-// })
+})
 
 // async function loadMessages() {
     
@@ -57,22 +46,18 @@
 //     }
 // }
 
-// setInterval(loadMessages,2000);
-
-const socket = new WebSocket("ws://localhost:3000");
-const messagesContainer = document.getElementById('messages');
-
-socket.onmessage = async (event)=>{
+function getMessages(message){
+    const messagesContainer = document.getElementById('messages');
     const div = document.createElement('div')
     div.classList.add('message');
-
-    div.innerText = await event.data;
+    div.innerText = message;
     messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-function send(event) {
-    event.preventDefault();
-    const text = document.getElementById("message-input").value;
-    socket.send(text);
-}
+
+socket.on("chat-messages",(message)=>{
+    getMessages(message);
+})
+
 

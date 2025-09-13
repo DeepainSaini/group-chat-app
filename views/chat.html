@@ -14,7 +14,7 @@
         </div>
         <div class="chat-messages" id="messages"></div>
         <div class="chat-input">
-          <form onsubmit="send(event)">
+          <form>
             <textarea id="message-input" name="message" placeholder="Type a message..."></textarea>
             <button type="submit" id="send-btn">Send</button>
           </form>
@@ -22,6 +22,8 @@
       </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
+    
 </body>
 </html>
