@@ -5,7 +5,7 @@ module.exports = (socket,io) => {
         socket.join(roomName);
     })
 
-    socket.on("new-messages",(message,roomName)=>{
+    socket.on("new-messages",({message,roomName})=>{
        
         console.log("user",socket.user.name,"said",message);
         io.to(roomName).emit("new-messages",{username: socket.user.name,message:message});

@@ -8,13 +8,23 @@
     <link rel="stylesheet" href="/css/chat.css">
 </head>
 <body>
+    
+     <div class="search-container">
+      <h2>Search for users</h2>
+        <div class="search-input">
+          <form id="search-form">
+            <input type="text" id="search-input" name="email" placeholder="Email of the user"">
+            <button type="submit" id="search-btn">Search</button>
+          </form>
+        </div>
+     </div>
     <div class="chat-container">
         <div class="chat-header">
             <h3>Chat</h3>
         </div>
         <div class="chat-messages" id="messages"></div>
         <div class="chat-input">
-          <form>
+          <form id="message-form">
             <textarea id="message-input" name="message" placeholder="Type a message..."></textarea>
             <button type="submit" id="send-btn">Send</button>
           </form>

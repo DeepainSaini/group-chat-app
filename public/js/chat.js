@@ -6,15 +6,26 @@ const socket = io('http://localhost:3000',{
 });
 
 
-document.querySelector('form').addEventListener('submit',(event)=>{
+document.querySelector('#message-form').addEventListener('submit',(event)=>{
 
     event.preventDefault();
     const message = event.target.message.value
-    socket.emit("chat-messages",message);
+    socket.emit("new-messages",{message:message,roomName:localStorage.getItem("roomName")});
     event.target.message.value = "";
    
 
 
+})
+
+document.getElementById('search-form').addEventListener('submit',async (event)=>{
+     
+    event.preventDefault();
+    const email = event.target.email.value;
+
+    socket.emit("join-room",email);
+    localStorage.setItem("roomName",email);
+
+    alert("Room we joined" + email);
 })
 
 // async function loadMessages() {
@@ -50,18 +61,18 @@ document.querySelector('form').addEventListener('submit',(event)=>{
 //     }
 // }
 
-function getMessages(message){
+function getMessages(username,message){
     const messagesContainer = document.getElementById('messages');
     const div = document.createElement('div')
     div.classList.add('message');
-    div.innerHTML = `<strong>${message.username}</strong>: ${message.message}`;
+    div.innerHTML = `<strong>${username}</strong>: ${message}`;
     messagesContainer.appendChild(div);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 
-socket.on("chat-messages",(message)=>{
-    getMessages(message);
+socket.on("new-messages",({username,message})=>{
+    getMessages(username,message);
 })
 
 
