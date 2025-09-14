@@ -49,8 +49,10 @@ const getChats = async (req,res) => {
 
 }
 
+
 module.exports = {
     getChatPage,
     addChats,
-    getChats
+    getChats,
+    
 }

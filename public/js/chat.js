@@ -13,19 +13,63 @@ document.querySelector('#message-form').addEventListener('submit',(event)=>{
     socket.emit("new-messages",{message:message,roomName:localStorage.getItem("roomName")});
     event.target.message.value = "";
    
-
-
 })
 
 document.getElementById('search-form').addEventListener('submit',async (event)=>{
      
-    event.preventDefault();
-    const email = event.target.email.value;
+    try{
+        event.preventDefault();
+        const email = event.target.email.value;
+        event.target.email.value = "";
+        const result = await axios.post('http://localhost:3000'+"/user/search",{email:email},{headers : {'Authorization' : token}});
+        if(result.data.message === "user found"){
+            
+            const searchList = document.querySelector('.search-list');
+            const list = searchList.getElementsByTagName("li"); 
 
-    socket.emit("join-room",email);
-    localStorage.setItem("roomName",email);
+            let exists = false;
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].textContent === email) {
+                    exists = true;
+                    break;
+                }
 
-    alert("Room we joined" + email);
+            }
+
+            if(exists === false){
+                
+                const li = document.createElement('li');
+                li.className = 'search-item';
+                li.innerHTML = `${email}`;
+                searchList.appendChild(li);
+                li.addEventListener('click',(event)=>{
+                    
+                    document.getElementById('search-input').value = event.target.textContent;
+                })
+            }
+
+            const myEmail = localStorage.getItem('userEmail');
+
+            const roomName = [myEmail,email].sort().join("-");
+            
+            socket.emit("join-room",roomName);
+            localStorage.setItem("roomName",roomName);
+
+            alert("Room we joined " + roomName);
+        }
+
+    }catch(error){
+        
+        if(error.response.data.message === "user not found"){
+            document.getElementById('errormsg').innerHTML = "USER NOT FOUND"
+            setTimeout(()=>{
+                document.getElementById('errormsg').innerHTML = "";
+            },3000);
+
+        }
+        console.log(error);
+    }
+    
 })
 
 // async function loadMessages() {
@@ -61,18 +105,24 @@ document.getElementById('search-form').addEventListener('submit',async (event)=>
 //     }
 // }
 
-function getMessages(username,message){
+function getMessages(username,email,message){
     const messagesContainer = document.getElementById('messages');
     const div = document.createElement('div')
     div.classList.add('message');
+
+    if (email === localStorage.getItem('userEmail')) {
+        div.classList.add('my-message');   
+    } else {
+        div.classList.add('other-message');
+    }
     div.innerHTML = `<strong>${username}</strong>: ${message}`;
     messagesContainer.appendChild(div);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 
-socket.on("new-messages",({username,message})=>{
-    getMessages(username,message);
+socket.on("new-messages",({username,email,message})=>{
+    getMessages(username,email,message);
 })
 
 

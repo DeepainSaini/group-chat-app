@@ -121,45 +121,23 @@ const getUserDetails = async (req,res) => {
 
 }
 
-const getChatPage = (req,res) => {
-     
-    res.sendFile(path.join(__dirname,'../','views','chat.html'))
-}
-
-const addChats = async (req,res) => {
+const searchEmail = async (req,res) => {
 
     try{
-        const {message} = req.body;
-        const chat = await Chat.create({
+        const {email} = req.body;
+        const user = await User.findOne({where:{email:email}});
+        if(!user){
+            return res.status(404).json({message: "user not found"});
+        }
 
-            content : message,
-            UserId : req.user.id
-        })
-
-        res.status(200).json({message: "message added",chat});
+        res.status(200).json({message: "user found"});
 
     }catch(error){
-        
         console.log(error);
         res.status(500).json({message: "something went wrong"});
     }
-
 }
 
-const getChats = async (req,res) => {
-
-    try{
-
-        const chats = await Chat.findAll();
-        res.status(200).json({message: "sent chats",chats})
-
-    }catch(error){
-
-        console.log(error);
-        res.status(500).json({message: "someting went wrong"});
-    }
-
-}
 
 
 module.exports = {
@@ -167,7 +145,5 @@ module.exports = {
     postUserDetails,
     getLoginPage,
     getUserDetails,
-    getChatPage,
-    addChats,
-    getChats
+    searchEmail
 }

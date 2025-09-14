@@ -7,5 +7,6 @@ router.get('/signup',userController.getSignUpPage);
 router.post('/signup',userController.postUserDetails);
 router.get('/login',userController.getLoginPage);
 router.post('/login',userController.getUserDetails);
+router.post('/search',userAuthentication.authenticate,userController.searchEmail);
 
 module.exports = router;

@@ -15,6 +15,7 @@ document.querySelector('form').addEventListener('submit',(event)=>{
     axios.post('http://localhost:3000'+"/user/login",obj).then((resullt)=>{
 
         alert('User Logged In Successfully');
+        localStorage.setItem('userEmail',obj.email);
         event.target.email.value = "";
         event.target.number.value = "";
         event.target.password.value = "";

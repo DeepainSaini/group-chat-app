@@ -8,6 +8,6 @@ module.exports = (socket,io) => {
     socket.on("new-messages",({message,roomName})=>{
        
         console.log("user",socket.user.name,"said",message);
-        io.to(roomName).emit("new-messages",{username: socket.user.name,message:message});
+        io.to(roomName).emit("new-messages",{username: socket.user.name,email:socket.user.email,message:message});
     });
 }
