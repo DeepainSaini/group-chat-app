@@ -33,10 +33,10 @@ const addChats = async (req,res) => {
 const getChats = async (req,res) => {
 
     try{
-
+        const {roomName} = req.query;
         const chats = await Chat.findAll({
-           
-            include: [{ model: User, attributes: ['id', 'name']}],
+            where: { roomName: roomName },
+            include: [{ model: User, as: 'user', attributes: ['id', 'name','email']}],
             order: [['createdAt', 'ASC']]
         });
         res.status(200).json({message: "sent chats",chats})

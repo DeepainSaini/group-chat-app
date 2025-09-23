@@ -2,6 +2,7 @@ const express  = require('express');
 const http = require('http');
 const userRoute = require('./routes/userRoutes');
 const chatRoute = require('./routes/chatRoutes');
+const groupRoute = require('./routes/groupRoutes');
 const socketIo = require('./socket_io');
 const app  = express();
 
@@ -17,6 +18,7 @@ socketIo(server);
 
 app.use('/user',userRoute);
 app.use('/user',chatRoute);
+app.use('/group',groupRoute);
 
 
 db.sequelize.sync({force:false}).then(()=>{

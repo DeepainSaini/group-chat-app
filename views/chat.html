@@ -10,25 +10,67 @@
 <body>
     
      <div class="search-container">
-      <h2>Search for users</h2>
+      <h2>Connect with other users</h2>
         <div class="search-input">
           <form id="search-form">
             <input type="text" id="search-input" name="email" placeholder="Email of the user"">
-            <button type="submit" id="search-btn">Search</button>
+            <button type="submit" id="search-btn">Connect</button>
             <div id="errormsg" class="errormsg"></div>
           </form>
         </div>
         <ul class="search-list"></ul>
      </div>
+     
+     <div class="group-panel">
+      <h2>Group Chat</h2>
+      
+      <!-- Create Group Section -->
+      <div class="create-group-section">
+          <h3>Create New Group</h3>
+          <form id="create-group-form">
+              <input type="text" id="group-name" name="groupName" placeholder="Group Name" required>
+              <button type="submit" id="create-group-btn">Create Group</button>
+          </form>
+          <div id="create-error" class="errormsg"></div>
+      </div>
+      
+      <!-- Join Existing Group Section -->
+      <div class="join-group-section">
+          <h3>Join Existing Group</h3>
+          <form id="join-group-form">
+              <input type="text" id="group-code" name="groupCode" placeholder="Enter Group Code or Name">
+              <button type="submit" id="join-group-btn">Join Group</button>
+          </form>
+          <div id="join-error" class="errormsg"></div>
+      </div>
+      
+      <!-- My Groups Section -->
+      <div class="my-groups-section">
+          
+          <div class="my-groups-list" id="my-groups-list">
+              <h3>My Groups</h3> 
+              <ul class="my-groups-list-items"></ul>
+          </div>
+          
+          <div class="joined-groups-list" id="joined-groups-list">
+            <h3>Joined Groups</h3>
+            <ul class="joined-groups-list-items"></ul>
+        </div>
+
+      </div>
+  </div>
+  
     <div class="chat-container">
         <div class="chat-header">
             <h3>Chat</h3>
+            <div id="errormsg1" class="errormsg1"></div>
         </div>
         <div class="chat-messages" id="messages"></div>
         <div class="chat-input">
           <form id="message-form">
             <textarea id="message-input" name="message" placeholder="Type a message..."></textarea>
             <button type="submit" id="send-btn">Send</button>
+            <!-- <div id="errormsg1" class="errormsg1"></div> -->
           </form>
         </div>
       </div>
